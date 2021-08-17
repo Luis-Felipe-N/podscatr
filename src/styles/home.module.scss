@@ -6,7 +6,7 @@
     h2 {
         margin: 2rem 0 1rem;
     }
-    .latesEpisodes {
+    .latestEpisodes {
 
         ul{
             list-style: none;
@@ -26,25 +26,17 @@
                 align-items: center;
                 justify-content: center;
 
-                .containerImage {
-                    width: 6.7rem !important;
-                }
-
+                
                 img {
                     border-radius: 3px;
-                    // width: 6.7rem;
-                    // height: 3.5rem;
+                    width: 6rem;
+                    height: 3rem;
                 }
 
                 .episodeDetails {
-                    // flex: 1;
                     margin-left: 1rem;
 
-                    a{
-                        // width: 70%;
-                        // white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
+                    a {
                         display: block;
                         color: var(--gray-800);
                         font-family: Lexend, sans-serif;
@@ -113,11 +105,53 @@
             }
         } 
     }
+
+    .allEpisodes {
+        padding-bottom: 2rem;
+
+        table {
+            width: 100%;
+
+            th, td {
+                padding: .5rem .7rem ;
+                border-bottom: 1px solid var(--gray-100);
+            }
+
+            th {
+                color: var(--gray);
+                text-transform: uppercase;
+                font: 500 .75rem Lexend, sans-serif;
+            }
+
+            td {
+                font-size: .8rem;
+
+                img {
+                    width: 3rem;
+                    height: 2rem;
+                    border-radius: .5rem;
+                }
+
+                a {
+                    display: block;
+                    color: var(--gray-800);
+                    font-family: Lexend, sans-serif;
+                    font-weight: 600;
+                    text-decoration: none;
+                    line-height: 1.4rem;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media (max-width:800px) {
     .homepage {
-        .latesEpisodes {
+        .latestEpisodes {
             ul {
                 grid-template-columns: 1fr;
                 grid-template-rows: 1fr 1fr;

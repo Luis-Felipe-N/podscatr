@@ -1,32 +1,33 @@
 import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString'
+import { convertDurationToTimeString } from '../utils/convertDurationToTimeString'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/home.module.scss'
 import { api } from '../service/api'
 
-export default function Home({latesEpisodes, episodes}) {
+export default function Home({latestEpisodes, allEpisodes}) {
 
     return (
         <div className={styles.homepage}>
-            <section className={styles.latesEpisodes}>
+            <section className={styles.latestEpisodes}>
                 <h2>Últimos episódos</h2>
                 <ul>
                 {
-                    latesEpisodes.map( episode => {
+                    latestEpisodes.map( episode => {
                         return (
                             <li key={episode.id}>
-                               <div className={styles.containerImage}>
+                               <div style={{width: '6rem'}}>
                                 <Image
                                     alt={episode.title}
                                     src={episode.thumbnail}
                                     width={192}
-                                    height={142}
+                                    height={192}
                                     objectFit="cover"
                                     />
                                </div>
                                 <div className={styles.episodeDetails}>
-                                    <a href="#">{episode.title}</a>
+                                    <Link href={`/episodes/${episode.id}`}><a>{episode.title}</a></Link>
                                     <p>{episode.members}</p>
                                     <span>{episode.publishedAt}</span>
                                     <span>{episode.duration}</span>
@@ -52,10 +53,10 @@ export default function Home({latesEpisodes, episodes}) {
                     </thead>
                     <tbody>
                         {
-                            episodes.map( episode => {
+                            allEpisodes.map( episode => {
                                 return (
                                     <tr key={episode.id}>
-                                        <td>
+                                        <td  style={{width: '70px'}}>
                                             <Image 
                                                 src={episode.thumbnail}
                                                 alt={episode.title}
@@ -64,9 +65,13 @@ export default function Home({latesEpisodes, episodes}) {
                                                 objectFit="cover"
                                             />
                                         </td>
-                                        <td>{episode.title}</td>
+                                        <td>
+                                            <Link href={`/episodes/${episode.id}`}>
+                                                <a>{episode.title}</a>  
+                                            </Link>
+                                        </td>
                                         <td>{episode.members}</td>
-                                        <td>{episode.publishedAt}</td>
+                                        <td style={{width: '100px'}}>{episode.publishedAt}</td>
                                         <td>{episode.duration}</td>
                                     </tr>
                                 )
@@ -113,32 +118,3 @@ export const getStaticProps = async () => {
       revalidate: 60 * 60 * 8,
     }
   }
-
-
-// export const getStaticProps = async () => {
-//     const response = await fetch('http://localhost:3000/api/episodes')
-//     const data = await response.json()
-//     const episodes = data.episodes.map( episode => {
-//         return {
-//             id: episode.id,
-//             title: episode.title,
-//             thumbnail: episode.thumbnail,
-//             members: episode.members,
-//             description: episode.description,
-//             publishedAt: format(parseISO(episode.published_at), 'd MMM yy', {locale: ptBR}),
-//             duration: convertDurationToTimeString(Number(episode.file.duration)),
-//             url: episode.file.url
-//         }
-//     } )
-
-//     const latesEpisodes = episodes.slice(0, 2)
-//     const allEpisodes = episodes.slice(2, episodes.length)
-
-//     return {
-//         props: {
-//             latesEpisodes,
-//             episodes: allEpisodes
-//         },
-//         revalidate: 60 * 60 * 8,
-//     }
-// }
