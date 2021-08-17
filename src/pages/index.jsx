@@ -79,31 +79,60 @@ export default function Home({latesEpisodes, episodes}) {
     )
 }
 
-
 export const getStaticProps = async () => {
     const response = await fetch('http://localhost:3000/api/episodes')
     const data = await response.json()
-    const episodes = data.episodes.map( episode => {
-        return {
-            id: episode.id,
-            title: episode.title,
-            thumbnail: episode.thumbnail,
-            members: episode.members,
-            description: episode.description,
-            publishedAt: format(parseISO(episode.published_at), 'd MMM yy', {locale: ptBR}),
-            duration: convertDurationToTimeString(Number(episode.file.duration)),
-            url: episode.file.url
-        }
-    } )
-
-    const latesEpisodes = episodes.slice(0, 2)
+ 
+    const episodes = data.map(episode => {
+      return {
+        id: episode.id,
+        title: episode.title,
+        thumbnail: episode.thumbnail,
+        members: episode.members,
+        publishedAt: format(parseISO(episode.published_at), 'd MMM yy', { locale: ptBR }),
+        duration: Number(episode.file.duration),
+        durationAsString: convertDurationToTimeString(Number(episode.file.duration)),
+        url: episode.file.url
+      }
+    })
+ 
+    const latestEpisodes = episodes.slice(0, 2)
     const allEpisodes = episodes.slice(2, episodes.length)
-
+ 
     return {
-        props: {
-            latesEpisodes,
-            episodes: allEpisodes
-        },
-        revalidate: 60 * 60 * 8,
+      props: {
+       latestEpisodes,
+       allEpisodes,
+      },
+      revalidate: 60 * 60 * 8,
     }
-}
+  }
+
+
+// export const getStaticProps = async () => {
+//     const response = await fetch('http://localhost:3000/api/episodes')
+//     const data = await response.json()
+//     const episodes = data.episodes.map( episode => {
+//         return {
+//             id: episode.id,
+//             title: episode.title,
+//             thumbnail: episode.thumbnail,
+//             members: episode.members,
+//             description: episode.description,
+//             publishedAt: format(parseISO(episode.published_at), 'd MMM yy', {locale: ptBR}),
+//             duration: convertDurationToTimeString(Number(episode.file.duration)),
+//             url: episode.file.url
+//         }
+//     } )
+
+//     const latesEpisodes = episodes.slice(0, 2)
+//     const allEpisodes = episodes.slice(2, episodes.length)
+
+//     return {
+//         props: {
+//             latesEpisodes,
+//             episodes: allEpisodes
+//         },
+//         revalidate: 60 * 60 * 8,
+//     }
+// }
