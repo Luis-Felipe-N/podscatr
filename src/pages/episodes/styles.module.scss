@@ -1,0 +1,88 @@
+.episode {
+    max-width: 45rem;
+    padding: 3rem 5%;
+    margin: 0 auto;
+
+    .thumbnailContainer {
+        position: relative;
+
+        img {
+            border-radius: 5px;
+        }
+
+        button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%, -50%);
+            z-index: 2;
+            background-color: transparent;
+            padding: 1rem;
+            border: 0;
+            border-radius: .5rem;
+            font-size: 0;
+            transition: .2s;
+
+            &:hover {
+                filter: brightness(.9);
+            }
+
+
+            &:first-child {
+                left: 0;
+                transform: translateX(-50%);
+                background-color: var(--purple-500);
+            }
+
+            &:last-child {
+                padding: .7rem;
+                right: 0;
+                transform: translateX(50%);
+                background-color: var(--green-500);
+            }
+        }
+    }
+
+    header {
+        margin: 2rem 0;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--gray-100);
+
+        h1 {
+            margin-bottom: 1rem;
+        }
+
+        .members {
+            display: inline-block;
+            overflow: hidden;
+            width: 40%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        span {
+            position: relative;
+            & + span {
+                margin-left: 1rem;
+                padding-left: 1rem;
+                &::before {
+                    content: '';
+                    display: block;
+                    background-color: var(--green-500);
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 2px;
+                    position: absolute;
+                    left: 0;
+                    top: calc(50% - 2px);
+                    // transform: translateY(-50%, 50%);
+                }
+            }
+        }
+    }
+
+    .description {
+        margin-top: 2rem;
+        list-style: 1.675rem;
+        
+    }
+}
