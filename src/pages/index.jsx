@@ -3,6 +3,7 @@ import { ptBR } from 'date-fns/locale'
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString'
 import Image from 'next/image'
 import styles from '../styles/home.module.scss'
+import { api } from '../service/api'
 
 export default function Home({latesEpisodes, episodes}) {
 
@@ -80,8 +81,13 @@ export default function Home({latesEpisodes, episodes}) {
 }
 
 export const getStaticProps = async () => {
-    const response = await fetch('http://localhost:3000/api/episodes')
-    const data = await response.json()
+    const { data } = await api.get('episodes', {
+      params: {
+        _limit: 12,
+        _sort: 'published_at',
+        _order: 'desc'
+      }
+    });
  
     const episodes = data.map(episode => {
       return {
