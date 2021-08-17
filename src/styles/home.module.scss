@@ -1,0 +1,127 @@
+.homepage {
+    padding: 0 2rem;
+    height: calc(100vh - 10.5rem);
+    overflow-y: scroll;
+    
+    h2 {
+        margin: 2rem 0 1rem;
+    }
+    .latesEpisodes {
+
+        ul{
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            max-width: 100%;
+
+            li {
+                position: relative;
+                background-color: var(--white);
+                border: 1px solid var(--gray-100);
+                padding: .5rem 1rem;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .containerImage {
+                    width: 6.7rem !important;
+                }
+
+                img {
+                    border-radius: 3px;
+                    // width: 6.7rem;
+                    // height: 3.5rem;
+                }
+
+                .episodeDetails {
+                    // flex: 1;
+                    margin-left: 1rem;
+
+                    a{
+                        // width: 70%;
+                        // white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: block;
+                        color: var(--gray-800);
+                        font-family: Lexend, sans-serif;
+                        font-weight: 600;
+                        text-decoration: none;
+                        line-height: 1.4rem;
+                    }
+                    p {
+                        font-size: .875rem;
+                        width: 70%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    span {
+                        font-size: .875rem;
+                        display: inline-block;
+                        margin-top: .5rem;
+
+                        &:last-child {
+                            margin-left: .5rem;
+                            padding-left: .5rem;
+                            position: relative;
+
+                            &::before {
+                                content: '';
+                                display: block;
+                                background-color: var(--green-500);
+                                width: 4px;
+                                height: 4px;
+                                border-radius: 2px;
+                                position: absolute;
+                                left: 0;
+                                top: calc(50% - 2px);
+                                // transform: translateY(-50%, 50%);
+                            }
+                        }
+                    }
+                }
+
+                button {
+                    position: absolute;
+                    right: 1rem;
+                    bottom: 1rem;
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    background-color: var(--white);
+                    border: 1px solid var(--gray-200);
+                    border-radius: 5px;
+                    font-size: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: .2s;
+
+                    img {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                    }
+
+                    &:hover {
+                        filter: brightness(.93);
+                    }
+                }
+            }
+        } 
+    }
+}
+
+@media (max-width:800px) {
+    .homepage {
+        .latesEpisodes {
+            ul {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+        }
+    }
+}
