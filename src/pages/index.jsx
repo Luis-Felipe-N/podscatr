@@ -4,7 +4,7 @@ import { convertDurationToTimeString } from '../utils/convertDurationToTimeStrin
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/home.module.scss'
-import { api } from '../service/api'
+// import { api } from '../service/api'
 
 export default function Home({latestEpisodes, allEpisodes}) {
 
@@ -86,23 +86,18 @@ export default function Home({latestEpisodes, allEpisodes}) {
 }
 
 export const getStaticProps = async () => {
-    const { data } = await api.get('episodes', {
-      params: {
-        _limit: 12,
-        _sort: 'published_at',
-        _order: 'desc'
-      }
-    });
+    const response = await fetch('http://localhost:3000/api/episodes')
+    const data = await response.json()
  
-    const episodes = data.map(episode => {
+    const episodes = data.episodes.map(episode => {
       return {
         id: episode.id,
         title: episode.title,
         thumbnail: episode.thumbnail,
         members: episode.members,
         publishedAt: format(parseISO(episode.published_at), 'd MMM yy', { locale: ptBR }),
-        duration: Number(episode.file.duration),
-        durationAsString: convertDurationToTimeString(Number(episode.file.duration)),
+        duration: convertDurationToTimeString(Number(episode.file.duration)),
+        // durationAsString: convertDurationToTimeString(Number(episode.file.duration)),
         url: episode.file.url
       }
     })

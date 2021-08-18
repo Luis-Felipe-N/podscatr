@@ -3,11 +3,12 @@ import { ptBR } from "date-fns/locale";
 // import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "../../service/api"
+// import { api } from "../../service/api"
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
 import styles from './styles.module.scss'
 
 export default function Episode({episode}) {
+  console.log(episode)
 
     return (
         <div className={styles.episode}>
@@ -39,41 +40,37 @@ export default function Episode({episode}) {
 }
 
 export const getStaticPaths = async (ctx) => {
-    const { data } = await api.get('episodes', {
-        params: {
-          __limit: 12,
-          __sort: 'published_at',
-          __order: 'desc'
-        }
-      })
+  const response = await fetch('http://localhost:3000/api/episodes')
+  const data = await response.json()
     
-      const paths = data.map(episode => ({
-        params: {
-          slug: episode.id
-        }
-      }))
-    
-      return {
-        paths,
-        fallback: 'blocking'
-      }
+  const paths = data.episodes.map(episode => ({
+    params: {
+      slug: episode.id
     }
+  }))
+
+  return {
+    paths,
+    fallback: 'blocking'
+  }
+}
 
 export const getStaticProps = async (ctx) => {
     const { slug } = ctx.params;
+
+    const response = await fetch('http://localhost:3000/api/episodes')
+    const responseJson = await response.json()
   
-    const { data } = await api.get(`/episodes/${slug}`);
+    const data = responseJson.episodes.filter(episode => episode.id === slug)[0]
 
     const episode = {
       id: data.id,
       title: data.title,
       thumbnail: data.thumbnail,
       members: data.members,
-      publishedAt: format(parseISO(data.published_at), 'd MMM yy', { 
-        locale: ptBR
-      }),
-      duration: Number(data.file.duration),
-      durationAsString: convertDurationToTimeString(Number(data.file.duration)),
+      publishedAt: format(parseISO(data.published_at), 'd MMM yy', { locale: ptBR }),
+      duration: convertDurationToTimeString(Number(data.file.duration)),
+      // durationAsString: convertDurationToTimeString(Number(data.file.duration)),
       description: data.description,
       url: data.file.url,
     }
