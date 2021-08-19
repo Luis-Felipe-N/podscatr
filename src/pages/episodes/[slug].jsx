@@ -1,10 +1,9 @@
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
-// import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/image";
 import Link from "next/link";
-// import { api } from "../../service/api"
 import { convertDurationToTimeString } from "../../utils/convertDurationToTimeString";
+import axios from "axios";
 import styles from './styles.module.scss'
 
 export default function Episode({episode}) {

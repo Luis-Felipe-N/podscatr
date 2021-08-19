@@ -4,6 +4,7 @@ import { convertDurationToTimeString } from '../utils/convertDurationToTimeStrin
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/home.module.scss'
+import axios from 'axios'
 // import { api } from '../service/api'
 
 export default function Home({latestEpisodes, allEpisodes}) {
@@ -79,7 +80,6 @@ export default function Home({latestEpisodes, allEpisodes}) {
                         }
                     </tbody>
                 </table>
-                {}
             </section>
         </div>
     )
@@ -97,7 +97,6 @@ export const getStaticProps = async () => {
         members: episode.members,
         publishedAt: format(parseISO(episode.published_at), 'd MMM yy', { locale: ptBR }),
         duration: convertDurationToTimeString(Number(episode.file.duration)),
-        // durationAsString: convertDurationToTimeString(Number(episode.file.duration)),
         url: episode.file.url
       }
     })
