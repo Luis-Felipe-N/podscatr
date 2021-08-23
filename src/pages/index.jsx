@@ -5,16 +5,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/home.module.scss'
 import axios from 'axios'
+import { api } from '../service/api'
 // import { api } from '../service/api'
 
-export default function Home() {
+export default function Home({latestEpisodes, allEpisodes}) {
 
     return (
         <div className={styles.homepage}>
             <section className={styles.latestEpisodes}>
                 <h2>Últimos episódos</h2>
                 <ul>
-                {/* {
+                {
                     latestEpisodes.map( episode => {
                         return (
                             <li key={episode.id}>
@@ -39,7 +40,7 @@ export default function Home() {
                             </li>
                         )
                     })
-                } */}
+                }
                 </ul>
             </section>
             <section className={styles.allEpisodes}>
@@ -53,7 +54,7 @@ export default function Home() {
                         <th>Duração</th>
                     </thead>
                     <tbody>
-                        {/* {
+                        {
                             allEpisodes.map( episode => {
                                 return (
                                     <tr key={episode.id}>
@@ -77,7 +78,7 @@ export default function Home() {
                                     </tr>
                                 )
                             })
-                        } */}
+                        }
                     </tbody>
                 </table>
             </section>
@@ -85,30 +86,35 @@ export default function Home() {
     )
 }
 
-// export const getStaticProps = async () => {
-//     const response = await fetch('http://localhost:3000/api/episodes')
-//     const data = await response.json()
+export const getStaticProps = async () => {
+    const { data } = await api.get('episodes', {
+        params: {
+          __limit: 2,
+          __sort: 'published_at',
+          __order: 'desc'
+        }
+      })
  
-//     const episodes = data.episodes.map(episode => {
-//       return {
-//         id: episode.id,
-//         title: episode.title,
-//         thumbnail: episode.thumbnail,
-//         members: episode.members,
-//         publishedAt: format(parseISO(episode.published_at), 'd MMM yy', { locale: ptBR }),
-//         duration: convertDurationToTimeString(Number(episode.file.duration)),
-//         url: episode.file.url
-//       }
-//     })
+    const episodes = data.map(episode => {
+      return {
+        id: episode.id,
+        title: episode.title,
+        thumbnail: episode.thumbnail,
+        members: episode.members,
+        publishedAt: format(parseISO(episode.published_at), 'd MMM yy', { locale: ptBR }),
+        duration: convertDurationToTimeString(Number(episode.file.duration)),
+        url: episode.file.url
+      }
+    })
  
-//     const latestEpisodes = episodes.slice(0, 2)
-//     const allEpisodes = episodes.slice(2, episodes.length)
+    const latestEpisodes = episodes.slice(0, 2)
+    const allEpisodes = episodes.slice(2, episodes.length)
  
-//     return {
-//       props: {
-//        latestEpisodes,
-//        allEpisodes,
-//       },
-//       revalidate: 60 * 60 * 8,
-//     }
-// }
+    return {
+      props: {
+       latestEpisodes,
+       allEpisodes,
+      },
+      revalidate: 60 * 60 * 8,
+    }
+}
